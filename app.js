@@ -2,15 +2,15 @@ const express = require('express')
 const app = express()
 const http = require('http').createServer(app)
 const mongoose = require('mongoose')
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3099
 const passport = require('passport')
 const expressSession = require('express-session')
 const redis = require('redis')
-const redisStore = require('connect-redis')(expressSession)
-const redisClient = redis.createClient()
+// const redisStore = require('connect-redis')(expressSession)
+// const redisClient = redis.createClient()
 const sessionMiddleware = expressSession({
   secret: '[credentials.secret]',
-  store: new redisStore({ host: 'localhost', port: 6379, client: redisClient }),
+  // store: new redisStore({ host: 'localhost', port: 6379, client: redisClient }),
   saveUninitialized: false,
   resave: true
 })
