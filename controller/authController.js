@@ -40,7 +40,7 @@ exports.login = (req, res, next) => {
 exports.logout = function (req, res, next) {
   req.logout()
   //redirect to login page
-  res.json({ success: true, message: req.params.id })
+  res.json({ success: true, message: 'succesful' })
 }
 
 exports.resetPassword = async (req, res, next) => {
