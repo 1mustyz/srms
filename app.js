@@ -16,6 +16,8 @@ const sessionMiddleware = expressSession({
 })
 const Auth = require('./models/Auth')
 const authRouter = require('./routes/authRoute')
+const curriculumRouter = require('./routes/curriculumRoute')
+
 
 // //connect to db
 mongoose.connect('mongodb://localhost/srms', {
@@ -51,3 +53,5 @@ passport.serializeUser(Auth.serializeUser())
 passport.deserializeUser(Auth.deserializeUser())
 
 app.use('/auth', authRouter)
+app.use('/curriculum', curriculumRouter)
+
