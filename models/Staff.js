@@ -3,19 +3,19 @@ const Schema = mongoose.Schema;
 const passportLocalMongoose = require('passport-local-mongoose');
 
 //Schema design
-const AuthSchema = new Schema({
+const StaffSchema = new Schema({
     username: { type: String, required: true, unique: [ true, 'ID Number already exist' ] },
     image: { type: String, default: '1.jpg' },
-    email: { type: String, required: true },
+    email: { type: String },
     role: { type: Array, default: 'student'},
     teach: { type: Array}
 }, { timestamps: true });
 
 //plugin passport-local-mongoose to enable password hashing and salting and other things
-AuthSchema.plugin(passportLocalMongoose);
+StaffSchema.plugin(passportLocalMongoose);
 
 //connect the schema with user table
-const Auth = mongoose.model('auth', AuthSchema);
+const Staff = mongoose.model('staff', StaffSchema);
 
 //export the model 
-module.exports = Auth;
+module.exports = Staff;

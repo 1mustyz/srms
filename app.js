@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const PORT = process.env.PORT || 3099
 const passport = require('passport')
 const expressSession = require('express-session')
-const redis = require('redis')
+// const redis = require('redis')
 // const redisStore = require('connect-redis')(expressSession)
 // const redisClient = redis.createClient()
 const sessionMiddleware = expressSession({
@@ -14,8 +14,10 @@ const sessionMiddleware = expressSession({
   saveUninitialized: false,
   resave: true
 })
-const Auth = require('./models/Auth')
-const authRouter = require('./routes/authRoute')
+const Staff = require('./models/Staff')
+const Student = require('./models/Student')
+const studentRouter = require('./routes/studentRoute')
+const staffRouter = require('./routes/staffRoute')
 
 // //connect to db
 mongoose.connect('mongodb://localhost/srms', {
@@ -46,8 +48,14 @@ app.use(sessionMiddleware)
 // passport setup
 app.use(passport.initialize())
 app.use(passport.session())
-passport.use(Auth.createStrategy())
-passport.serializeUser(Auth.serializeUser())
-passport.deserializeUser(Auth.deserializeUser())
 
-app.use('/auth', authRouter)
+passport.use('staff', Staff.createStrategy())
+passport.use('student', Student.createStrategy())
+
+passport.serializeUser(Staff.serializeUser())
+passport.serializeUser(Student.serializeUser())
+passport.deserializeUser(Staff.deserializeUser())
+passport.deserializeUser(Student.deserializeUser())
+
+app.use('/staff', staffRouter)
+app.use('/student', studentRouter)
