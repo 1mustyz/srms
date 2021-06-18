@@ -45,6 +45,31 @@ exports.loginStudent = (req, res, next) => {
   })(req, res, next)
 }
 
+exports.setProfilePic = async (req,res, next) => {
+
+  singleUpload(req, res, async function(err) {
+    if (err instanceof multer.MulterError) {
+    return res.json(err.message);
+    }
+    else if (err) {
+      return res.json(err);
+    }
+    else if (!req.file) {
+      return res.json({"image": req.file, "msg":'Please select an image to upload'});
+    }
+    if(req.file){
+        console.log(req.query.id)
+        await Student.findOneAndUpdate({_id: req.query.id},{$set: {image: req.file.path}})
+        return  res.json({success: true,
+        message: 'profile picture updated successfully',
+                   },
+        
+    );
+    }
+    });          
+  
+}
+
 exports.resetPassword = async (req, res, next) => {
   try {
     const user = await Student.findById(req.params.id)
@@ -56,5 +81,49 @@ exports.resetPassword = async (req, res, next) => {
   }
 }
 
+exports.findAllStudent = async (req,res,next) => {
+  const students = await Student.find()
 
+  students
+   ? res.json({ success: true, students:students })
+   : res.json({ success: true, message:'No student added yet' })
+}
 
+exports.updateSingleStudent = async (req,res,next) => {
+  const {id} = req.query;
+  const {
+    studentId,
+    currentClass,
+    section,
+    category,
+    classNumber
+  } = req.body;
+
+  console.log(classNumber);
+
+  await Student.findByIdAndUpdate(id,{
+    'currentClass': currentClass,
+    'section': section,
+    'category': category,
+    'class[0].number': classNumber
+  })
+
+  res.json({success: true, message: `user with the ${id} is updated successfully`})
+}
+
+exports.findOneStudent = async (req,res,next) => {
+  const {id} = req.query;
+
+  const student = await Student.findById(id)
+
+  student
+   ? res.json({success: true, student: student})
+   : res.json({success: true, message: 'No register student yet'})
+  
+}
+
+exports.removeStudent = async (req,res,next) => {
+  const {id} = req.query;
+  await Student.findOneAndDelete({_id: id})
+  res.json({success: true, message: `student with the id ${id} has been removed`})
+}

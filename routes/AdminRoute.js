@@ -1,0 +1,32 @@
+const router = require('express').Router();
+const staffController = require('../controller/staffController');
+const logoutController = require('../controller/logoutController')
+const { isLoggedIn } = require('../middlewares/auth');
+const studentController = require('../controller/studentController')
+
+
+router.post('/register-staff', staffController.registerStaff)
+router.post('/register-student', studentController.registerStudent)
+
+router.post('/login', staffController.loginStaff)
+router.post('/change-password/:id', staffController.resetPassword)
+router.post('/logout', logoutController.logout)
+
+// admin set his profile
+router.put('/set-profile-pic', staffController.setProfilePic);
+
+// set role for staff
+router.put('/set-role', staffController.setRole);
+
+
+router.put('/update-single-student-profile', studentController.updateSingleStudent);
+
+router.get('/get-all-teachers', staffController.findAllTeachers);
+router.get('/get-all-principal', staffController.findAllPrincipal);
+router.get('/get-all-staff', staffController.findAllStaff);
+router.get('/get-all-student', studentController.findAllStudent);
+router.get('/get-single-student', studentController.findOneStudent);
+
+router.delete('/remove-student', studentController.removeStudent)
+
+module.exports = router;

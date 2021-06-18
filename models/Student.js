@@ -11,6 +11,7 @@ const TermSchema = new Schema({
                 ca1: Number,
                 ca2: Number,
                 ca3: Number,
+                ca4: Number,
                 exam: Number,
                 grade: String
             }]

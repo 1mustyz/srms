@@ -77,13 +77,13 @@ exports.findAllPrincipal = async (req,res, next) => {
    : res.json({success: false, message: 'no principal added yet',})
 }
 
-exports.findAllStudents = async (req,res, next) => {
+// exports.findAllStudents = async (req,res, next) => {
 
-  const result = await Student.find({role: 'student'});
-  result.length > 0
-   ? res.json({success: true, message: result,})
-   : res.json({success: false, message: 'no student added yet',})
-}
+//   const result = await Student.find({role: 'student'});
+//   result.length > 0
+//    ? res.json({success: true, message: result,})
+//    : res.json({success: false, message: 'no student added yet',})
+// }
 
 exports.setProfilePic = async (req,res, next) => {
 
@@ -122,4 +122,9 @@ exports.setRole = async (req,res,next) => {
 
    res.json({success: true, message: 'role has been set successfully'})
 }
-  
+
+exports.removeStaff = async (req,res,next) => {
+  const {id} = req.query;
+  await Student.findOneAndDelete({_id: id})
+  res.json({success: true, message: `staff with the id ${id} has been removed`})
+}

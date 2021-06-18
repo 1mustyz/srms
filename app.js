@@ -5,12 +5,12 @@ const mongoose = require('mongoose')
 const PORT = process.env.PORT || 3099
 const passport = require('passport')
 const expressSession = require('express-session')
-// const redis = require('redis')
-// const redisStore = require('connect-redis')(expressSession)
-// const redisClient = redis.createClient()
+const redis = require('redis')
+const redisStore = require('connect-redis')(expressSession)
+const redisClient = redis.createClient()
 const sessionMiddleware = expressSession({
   secret: '[credentials.secret]',
-  // store: new redisStore({ host: 'localhost', port: 6379, client: redisClient }),
+  store: new redisStore({ host: 'localhost', port: 6379, client: redisClient }),
   saveUninitialized: false,
   resave: true
 })
@@ -18,6 +18,8 @@ const Staff = require('./models/Staff')
 const Student = require('./models/Student')
 const studentRouter = require('./routes/studentRoute')
 const staffRouter = require('./routes/staffRoute')
+const adminRouter = require('./routes/AdminRoute')
+
 
 // //connect to db
 mongoose.connect('mongodb://localhost/srms', {
@@ -59,3 +61,5 @@ passport.deserializeUser(Student.deserializeUser())
 
 app.use('/staff', staffRouter)
 app.use('/student', studentRouter)
+app.use('/admin', adminRouter)
+
