@@ -24,9 +24,10 @@ const StudentSchema = new Schema({
     currentClass: { type: String },
     section: { type: String }, // specifies type of student primary, junior or senior
     category: { type: String }, // specifies category for senior school students Science, Art or Null for primary & junior pupils
+    
     class: [{
         number: Number,
-        term: TermSchema
+        term: TermSchema,
     }]
 }, { timestamps: true });
 
