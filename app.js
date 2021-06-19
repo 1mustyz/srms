@@ -19,6 +19,7 @@ const Student = require('./models/Student')
 const studentRouter = require('./routes/studentRoute')
 const staffRouter = require('./routes/staffRoute')
 const adminRouter = require('./routes/AdminRoute')
+const teacherRouter = require('./routes/teacherRoute')
 
 
 // //connect to db
@@ -62,4 +63,5 @@ passport.deserializeUser(Student.deserializeUser())
 app.use('/staff', staffRouter)
 app.use('/student', studentRouter)
 app.use('/admin', adminRouter)
+app.use('/teacher', teacherRouter)
 
