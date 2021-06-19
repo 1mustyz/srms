@@ -6,13 +6,13 @@ const {singleUpload} = require('../middlewares/filesMiddleware');
 // const connectEnsureLogin = require('connect-ensure-login')
 
 
-exports.registerStaff = async function (req, res, next) {
+exports.registerStaff = async (req, res, next) => {
     try {
       //create the user instance
       user = new Staff(req.body)
       const password = req.body.password ? req.body.password : 'password'
       //save the user to the DB
-      Staff.register(user, password, function (error, user) {
+      await Staff.register(user, password, function (error, user) {
         if (error) return res.json({ success: false, error }) 
         res.json({ success: true, user })
       })
@@ -127,4 +127,30 @@ exports.removeStaff = async (req,res,next) => {
   const {id} = req.query;
   await Student.findOneAndDelete({_id: id})
   res.json({success: true, message: `staff with the id ${id} has been removed`})
+}
+
+exports.statistics = async (req, res) => {
+  // fetch 
+  // number of all students
+  const allStudents = await Student.find({ }).countDocuments()
+  const dayCare = await Student.find({ section: 'day care' }).countDocuments()
+  const playClass = await Student.find({ section: 'play class' }).countDocuments()
+  const kindergardens = await Student.find({ section: 'kindergadens' }).countDocuments()
+  const grades = await Student.find({ section: 'grades' }).countDocuments()
+  const secondary = await Student.find({ $or: [ { section: 'junior'}, { section: 'senior'} ]}).countDocuments()
+  const junior = await Student.find({ section: 'junior' }).countDocuments()
+  const senior = await Student.find({ section: 'senior' }).countDocuments()
+  const staffs = await Staff.find({ }).countDocuments()
+
+  // count each class paid and unpaid
+  // count each class number of students
+  
+  res.json({ 
+    allStudents, dayCare,
+    playClass, kindergardens, 
+    grades, secondary, junior, 
+    senior, staffs })
+
+  // number of grades, secondary, junior, senior, day care, play class school students
+  // 
 }

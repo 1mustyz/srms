@@ -6,6 +6,7 @@ const { isLoggedIn } = require('../middlewares/auth');
 const studentController = require('../controller/studentController')
 
 
+router.get('/dashboard', staffController.statistics)
 router.post('/register-staff', staffController.registerStaff)
 router.post('/register-student', studentController.registerStudent)
 
